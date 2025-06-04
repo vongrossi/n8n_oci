@@ -2,7 +2,7 @@
 
 > One-click deployment of n8n on Oracle Cloud Free Tier.
 
-[![Deploy to Oracle Cloud](https://github.com/clementalo9/n8n_oci/blob/main/img/Deploy%20to%20Oracle%20Cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
+[![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/blob/main/img/Deploy%20to%20Oracle%20Cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
 
 ## ✨ Features
 - Runs on VM.Standard.A1.Flex (ARM, free tier)
@@ -15,6 +15,13 @@ You must first create a free Oracle Cloud account here:
 👉 https://www.oracle.com/cloud/free/
 
 Oracle requires a valid credit card for identity verification, but as long as you stay in the Always Free tier, you will not be charged.
+
+This project uses the `VM.Standard.A1.Flex` instance type, which is included in the Always Free tier with the following limits:
+- **4 OCPUs**
+- **24 GB RAM**
+- **2 VMs max per tenancy**
+
+n8n will run comfortably within those limits.
 
 ## 🚀 Quick Deploy (recommended)
 Click the button above to deploy automatically in your Oracle tenancy.
