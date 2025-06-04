@@ -1,0 +1,17 @@
+# Node modules
+node_modules/
+
+# Local docker volume
+n8n_data/
+
+# Terraform state
+*.tfstate
+*.tfstate.*
+.terraform/
+
+# Logs and temporary files
+*.log
+*.tmp
+*.swp
+*~
+.DS_Store
