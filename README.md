@@ -10,6 +10,12 @@
 - Basic auth enabled out of the box
 - Deployable via Oracle Cloud Resource Manager or Terraform CLI
 
+## 📝 Prerequisites
+You must first create a free Oracle Cloud account here:
+👉 https://www.oracle.com/cloud/free/
+
+Oracle requires a valid credit card for identity verification, but as long as you stay in the Always Free tier, you will not be charged.
+
 ## 🚀 Quick Deploy (recommended)
 Click the button above to deploy automatically in your Oracle tenancy.
 
