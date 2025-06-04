@@ -2,7 +2,7 @@
 
 > One-click deployment of n8n on Oracle Cloud Free Tier.
 
-[![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/blob/main/img/Deploy%20to%20Oracle%20Cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
+[![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/blob/main/images/Deploy2OCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
 
 ## ✨ Features
 - Runs on VM.Standard.A1.Flex (ARM, free tier)
