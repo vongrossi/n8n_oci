@@ -1,0 +1,35 @@
+title: "Deploy n8n on Oracle Cloud (Always Free Tier)"
+description: |
+  This stack deploys n8n using Docker on an ARM-based VM (VM.Standard.A1.Flex).
+  It uses the Always Free tier of Oracle Cloud and requires only minimal configuration.
+  SSH access and basic authentication are enabled for secure access.
+
+schemaVersion: 1.1.0
+locale: "en"
+
+variables:
+  - name: tenancy_ocid
+    type: string
+    required: true
+    visible: false
+    title: "Tenancy OCID"
+    description: "Automatically populated by Oracle Resource Manager"
+
+  - name: ssh_public_key
+    type: string
+    required: true
+    title: "SSH Public Key"
+    description: "Paste your SSH public key to access the instance via SSH"
+
+  - name: n8n_admin_user
+    type: string
+    required: true
+    default: "admin"
+    title: "n8n Admin Username"
+    description: "Username for logging into the n8n interface"
+
+  - name: n8n_admin_password
+    type: password
+    required: true
+    title: "n8n Admin Password"
+    description: "Secure password to access n8n"
