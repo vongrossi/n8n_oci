@@ -8,12 +8,7 @@ schemaVersion: 1.1.0
 locale: "en"
 
 variables:
-  - name: tenancy_ocid
-    type: string
-    required: true
-    visible: false
-    title: "Tenancy OCID"
-    description: "Automatically populated by Oracle Resource Manager"
+
 
   - name: ssh_public_key
     type: string
