@@ -1,0 +1,14 @@
+- name: admin_username
+  title: Admin Username
+  description: Username for accessing the application web interface
+  required: true
+
+- name: admin_password
+  title: Admin Password
+  description: Password for accessing the application web interface
+  required: true
+
+- name: ssh_public_key
+  title: SSH Public Key
+  description: Paste your SSH public key to access the virtual machine via SSH
+  required: true
