@@ -28,3 +28,4 @@ variables:
     required: true
     title: "n8n Admin Password"
     description: "Secure password to access n8n"
+    
