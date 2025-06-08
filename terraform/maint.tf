@@ -2,7 +2,17 @@ provider "oci" {}
 
 
 
+variable "admin_user" {
+  description = "Instance Auth Username"
+  type        = string
 
+}
+
+variable "admin_password" {
+  description = "Instance Auth Password"
+  type        = string
+  sensitive   = true
+}
 
 variable "tenancy_ocid" {
   description = "The OCID of the tenancy"
