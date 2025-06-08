@@ -1,10 +1,10 @@
-- name: admin_username
-  title: Admin Username
+- name: user
+  title: Username
   description: Username for accessing the application web interface
   required: true
 
-- name: admin_password
-  title: Admin Password
+- name: password
+  title: Password
   description: Password for accessing the application web interface
   required: true
 

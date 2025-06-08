@@ -2,13 +2,13 @@ provider "oci" {}
 
 
 
-variable "admin_user" {
+variable "user" {
   description = "Instance Auth Username"
   type        = string
 
 }
 
-variable "admin_password" {
+variable "password" {
   description = "Instance Auth Password"
   type        = string
   sensitive   = true
