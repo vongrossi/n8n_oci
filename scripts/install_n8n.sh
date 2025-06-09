@@ -20,7 +20,7 @@ sudo usermod -aG docker $USER
 newgrp docker
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
+SCRIPT_DIR="$(cd "$(dirname "$0")" &>/dev/null && pwd)"
 cd "$SCRIPT_DIR/.."
 sudo sed -i "s|N8N_BASIC_AUTH_USER=.*|N8N_BASIC_AUTH_USER=${ESCAPED_USER}|" docker-compose.yml
 sudo sed -i "s|N8N_BASIC_AUTH_PASSWORD=.*|N8N_BASIC_AUTH_PASSWORD=${ESCAPED_PASSWORD}|" docker-compose.yml
