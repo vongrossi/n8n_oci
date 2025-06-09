@@ -2,18 +2,6 @@ provider "oci" {}
 
 
 
-variable "user" {
-  description = "Instance Auth Username"
-  type        = string
-
-}
-
-variable "password" {
-  description = "Instance Auth Password"
-  type        = string
-  sensitive   = true
-}
-
 variable "tenancy_ocid" {
   description = "The OCID of the tenancy"
   type        = string
@@ -52,12 +40,12 @@ resource "oci_core_route_table" "n8n_route_table" {
 }
 
 resource "oci_core_subnet" "n8n_subnet" {
-  cidr_block        = "10.0.1.0/24"
-  compartment_id    = local.compartment_ocid
-  vcn_id            = oci_core_virtual_network.n8n_vcn.id
-  display_name      = "n8n-subnet"
-  route_table_id    = oci_core_route_table.n8n_route_table.id
-  dns_label         = "n8nsubnet"
+  cidr_block                 = "10.0.1.0/24"
+  compartment_id             = local.compartment_ocid
+  vcn_id                     = oci_core_virtual_network.n8n_vcn.id
+  display_name               = "n8n-subnet"
+  route_table_id             = oci_core_route_table.n8n_route_table.id
+  dns_label                  = "n8nsubnet"
   prohibit_public_ip_on_vnic = false
 }
 

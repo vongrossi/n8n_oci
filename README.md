@@ -29,6 +29,8 @@ Click the button above to deploy automatically in your Oracle tenancy.
 1. Log into your Oracle Cloud account
 2. Select your compartment
 3. Launch the stack and follow the prompts
+   (Resource Manager will ask for `vm_admin_user`, `vm_admin_password`,
+   and `ssh_public_key`)
 
 ## 🔧 Manual Deployment
 ```bash
@@ -38,15 +40,25 @@ terraform init
 terraform apply
 ```
 
+### Tenancy OCID
+When running `terraform apply` manually, pass your tenancy OCID:
+
+```bash
+terraform apply -var "tenancy_ocid=<your-tenancy-ocid>"
+```
+
+Oracle Resource Manager sets this variable automatically when deploying via the console.
+
 ## 🔐 Default Credentials
 - Username: `admin`
-- Password: `adminpassword`
+- Password: `strongpassword`
 
 > Change them in `docker-compose.yml` after first deployment.
 
 ### VM Credentials
-The Terraform variables `vm_admin_user` and `vm_admin_password` configure the SSH
-login for the created virtual machine.
+The Terraform variables `vm_admin_user`, `vm_admin_password`, and `ssh_public_key`
+configure the SSH login for the created virtual machine. OCI Resource Manager
+will prompt for these values when launching the stack.
 
 ## 🌐 Accessing n8n
 Go to `http://<your-instance-public-ip>:5678`
@@ -62,7 +74,6 @@ You need a domain name to use Let's Encrypt. We recommend [DuckDNS](https://www.
 
 ## 📜 License
 MIT
-```
 
 ---
 
