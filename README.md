@@ -40,6 +40,15 @@ terraform init
 terraform apply
 ```
 
+### Tenancy OCID
+When running `terraform apply` manually, pass your tenancy OCID:
+
+```bash
+terraform apply -var "tenancy_ocid=<your-tenancy-ocid>"
+```
+
+Oracle Resource Manager sets this variable automatically when deploying via the console.
+
 ## 🔐 Default Credentials
 - Username: `admin`
 - Password: `strongpassword`
