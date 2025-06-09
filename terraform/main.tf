@@ -1,12 +1,5 @@
 provider "oci" {}
 
-
-
-variable "tenancy_ocid" {
-  description = "The OCID of the tenancy"
-  type        = string
-}
-
 data "oci_identity_compartment" "root" {
   id = var.tenancy_ocid
 }

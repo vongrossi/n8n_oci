@@ -1,3 +1,7 @@
+variable "tenancy_ocid" {
+  description = "The OCID of the tenancy"
+  type        = string
+}
 
 variable "vm_admin_user" {
   description = "Username for the VM SSH login"
