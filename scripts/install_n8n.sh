@@ -42,8 +42,8 @@ services:
       - ./n8n_data:/home/node/.n8n
 EOF
 fi
-sudo sed -i "s|N8N_BASIC_AUTH_USER=.*|N8N_BASIC_AUTH_USER=${ESCAPED_USER}|" docker-compose.yml
-sudo sed -i "s|N8N_BASIC_AUTH_PASSWORD=.*|N8N_BASIC_AUTH_PASSWORD=${ESCAPED_PASSWORD}|" docker-compose.yml
+sudo sed -i "s|N8N_BASIC_AUTH_USER=.*|N8N_BASIC_AUTH_USER=$${ESCAPED_USER}|" docker-compose.yml
+sudo sed -i "s|N8N_BASIC_AUTH_PASSWORD=.*|N8N_BASIC_AUTH_PASSWORD=$${ESCAPED_PASSWORD}|" docker-compose.yml
 mkdir -p n8n_data
 sudo chown -R 1000:1000 n8n_data
 docker-compose up -d
