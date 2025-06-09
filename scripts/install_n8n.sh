@@ -22,6 +22,26 @@ sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" &>/dev/null && pwd)"
 cd "$SCRIPT_DIR/.."
+
+# Ensure docker-compose.yml is present. Create it with defaults if missing.
+if [ ! -f docker-compose.yml ]; then
+  cat <<'EOF' | sudo tee docker-compose.yml > /dev/null
+services:
+  n8n:
+    image: n8nio/n8n
+    restart: unless-stopped
+    container_name: n8n
+    ports:
+      - "5678:5678"
+    environment:
+      - GENERIC_TIMEZONE=Europe/Madrid
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=strongpassword
+    volumes:
+      - ./n8n_data:/home/node/.n8n
+EOF
+fi
 sudo sed -i "s|N8N_BASIC_AUTH_USER=.*|N8N_BASIC_AUTH_USER=${ESCAPED_USER}|" docker-compose.yml
 sudo sed -i "s|N8N_BASIC_AUTH_PASSWORD=.*|N8N_BASIC_AUTH_PASSWORD=${ESCAPED_PASSWORD}|" docker-compose.yml
 mkdir -p n8n_data
