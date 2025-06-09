@@ -44,6 +44,10 @@ terraform apply
 
 > Change them in `docker-compose.yml` after first deployment.
 
+### VM Credentials
+The Terraform variables `vm_admin_user` and `vm_admin_password` configure the SSH
+login for the created virtual machine.
+
 ## 🌐 Accessing n8n
 Go to `http://<your-instance-public-ip>:5678`
 
