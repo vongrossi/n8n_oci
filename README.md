@@ -66,8 +66,10 @@ Go to `http://<your-instance-public-ip>:5678`
 ✅ Optional: You may configure a custom domain and SSL certificate with Certbot. While not required, it is strongly recommended for production.
 
 ## 📂 Structure
-- `terraform/`: OCI resources (VCN, subnet, instance)
-- `scripts/`: Cloud-init script with Docker + n8n setup
+ - `terraform/`: OCI resources (VCN, subnet, instance)
+ - `scripts/`: Cloud-init script with Docker + n8n setup
+ - `backend/`: Express server for sending email and SMS notifications
+ - `frontend/`: Example page using notifications.js to call the backend
 
 ## 🛡️ SSL/TLS (optional)
 You need a domain name to use Let's Encrypt. We recommend [DuckDNS](https://www.duckdns.org) for a free domain name and simple DNS.

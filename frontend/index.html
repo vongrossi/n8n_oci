@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <title>Notification Demo</title>
+</head>
+<body>
+  <h1>Send Notification</h1>
+  <form id="notify-form">
+    <label>Email: <input type="email" id="email" /></label><br />
+    <label>Phone: <input type="text" id="phone" /></label><br />
+    <label>Subject: <input type="text" id="subject" /></label><br />
+    <label>Message:<br /><textarea id="message"></textarea></label><br />
+    <button type="submit">Send</button>
+  </form>
+  <script type="module">
+    import { sendNotification } from './notifications.js';
+    document.getElementById('notify-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const email = document.getElementById('email').value;
+      const phone = document.getElementById('phone').value;
+      const subject = document.getElementById('subject').value;
+      const message = document.getElementById('message').value;
+      try {
+        await sendNotification({ email, phone, subject, message });
+        alert('Notification sent');
+      } catch (err) {
+        alert(err.message);
+      }
+    });
+  </script>
+</body>
+</html>
