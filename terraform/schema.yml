@@ -1,11 +1,11 @@
-- name: user
-  title: Username
-  description: Username for accessing the application web interface
+- name: vm_admin_user
+  title: VM Admin Username
+  description: Username for the VM SSH login
   required: true
 
-- name: password
-  title: Password
-  description: Password for accessing the application web interface
+- name: vm_admin_password
+  title: VM Admin Password
+  description: Password for the VM SSH login
   required: true
 
 - name: ssh_public_key
