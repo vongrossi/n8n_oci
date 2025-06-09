@@ -80,8 +80,8 @@ resource "oci_core_instance" "n8n_instance" {
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data = base64encode(templatefile("${path.module}/../scripts/install_n8n.sh", {
-      n8n_user     = var.n8n_admin_user
-      n8n_password = var.n8n_admin_password
+      n8n_user     = var.vm_admin_user
+      n8n_password = var.vm_admin_password
     }))
   }
 }
