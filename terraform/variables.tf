@@ -19,3 +19,8 @@ variable "ssh_public_key" {
   type        = string
 }
 
+variable "image_ocid" {
+  description = "The OCID of the OS image to use for the VM"
+  type        = string
+}
+

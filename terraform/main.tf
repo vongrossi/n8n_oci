@@ -53,6 +53,11 @@ resource "oci_core_instance" "n8n_instance" {
     ocpus         = 1
   }
 
+  source_details {
+    source_type = "image"
+    source_id   = var.image_ocid
+  }
+
   create_vnic_details {
     subnet_id        = oci_core_subnet.n8n_subnet.id
     assign_public_ip = true
