@@ -1,11 +1,28 @@
+
 provider "oci" {}
 
+<<<<<<< HEAD
+data "oci_identity_tenancy" "this" {
+  tenancy_id = var.tenancy_ocid
+=======
 data "oci_identity_compartment" "root" {
   id = var.tenancy_ocid
+>>>>>>> b52d3a94d00412d06f796fcf573dc1972eaf5749
 }
 
 locals {
-  compartment_ocid = data.oci_identity_compartment.root.id
+  compartment_ocid = data.oci_identity_tenancy.this.id
+}
+
+data "oci_identity_availability_domains" "ads" {
+  compartment_id = local.compartment_ocid
+}
+
+data "oci_core_images" "oracle_linux" {
+  compartment_id = local.compartment_ocid
+  operating_system = "Oracle Linux"
+  operating_system_version = "8"
+  shape = "VM.Standard.A1.Flex"
 }
 
 resource "oci_core_virtual_network" "n8n_vcn" {
@@ -33,12 +50,12 @@ resource "oci_core_route_table" "n8n_route_table" {
 }
 
 resource "oci_core_subnet" "n8n_subnet" {
-  cidr_block                 = "10.0.1.0/24"
-  compartment_id             = local.compartment_ocid
-  vcn_id                     = oci_core_virtual_network.n8n_vcn.id
-  display_name               = "n8n-subnet"
-  route_table_id             = oci_core_route_table.n8n_route_table.id
-  dns_label                  = "n8nsubnet"
+  cidr_block        = "10.0.1.0/24"
+  compartment_id    = local.compartment_ocid
+  vcn_id            = oci_core_virtual_network.n8n_vcn.id
+  display_name      = "n8n-subnet"
+  route_table_id    = oci_core_route_table.n8n_route_table.id
+  dns_label         = "n8nsubnet"
   prohibit_public_ip_on_vnic = false
 }
 
@@ -55,7 +72,11 @@ resource "oci_core_instance" "n8n_instance" {
 
   source_details {
     source_type = "image"
+<<<<<<< HEAD
+    image_id    = data.oci_core_images.oracle_linux.images[0].id
+=======
     source_id   = var.image_ocid
+>>>>>>> b52d3a94d00412d06f796fcf573dc1972eaf5749
   }
 
   create_vnic_details {
@@ -66,12 +87,12 @@ resource "oci_core_instance" "n8n_instance" {
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data = base64encode(templatefile("${path.module}/../scripts/install_n8n.sh", {
-      n8n_user     = var.vm_admin_user
-      n8n_password = var.vm_admin_password
+      n8n_user     = var.n8n_admin_user
+      n8n_password = var.n8n_admin_password
     }))
   }
 }
 
-data "oci_identity_availability_domains" "ads" {
-  compartment_id = local.compartment_ocid
+output "n8n_public_ip" {
+  value = oci_core_instance.n8n_instance.public_ip
 }
