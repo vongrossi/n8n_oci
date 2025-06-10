@@ -12,3 +12,8 @@
   title: SSH Public Key
   description: Paste your SSH public key to access the virtual machine via SSH
   required: true
+
+- name: image_ocid
+  title: Image OCID
+  description: OCID of the Ubuntu image to use
+  required: true
