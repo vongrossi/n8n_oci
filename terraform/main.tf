@@ -1,15 +1,9 @@
 
 provider "oci" {}
 
-<<<<<<< HEAD
 data "oci_identity_tenancy" "this" {
   tenancy_id = var.tenancy_ocid
-=======
-data "oci_identity_compartment" "root" {
-  id = var.tenancy_ocid
->>>>>>> b52d3a94d00412d06f796fcf573dc1972eaf5749
 }
-
 locals {
   compartment_ocid = data.oci_identity_tenancy.this.id
 }
@@ -70,14 +64,10 @@ resource "oci_core_instance" "n8n_instance" {
     ocpus         = 1
   }
 
-  source_details {
-    source_type = "image"
-<<<<<<< HEAD
-    image_id    = data.oci_core_images.oracle_linux.images[0].id
-=======
-    source_id   = var.image_ocid
->>>>>>> b52d3a94d00412d06f796fcf573dc1972eaf5749
-  }
+source_details {
+  source_type = "image"
+  image_id    = "ocid1.image.oc1.eu-paris-1.aaaaaaaaquhxkpqu4bcbvflrcz6wvq6zzxwhayrl7atfns2m6q4frnggcffja"
+}
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.n8n_subnet.id
