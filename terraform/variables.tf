@@ -1,21 +1,21 @@
-variable "tenancy_ocid" {
-  description = "OCID du tenancy Oracle Cloud"
+ variable "tenancy_ocid" {
+  description = "OCID of Oracle Cloud Tenancy"
   type        = string
 }
 
 variable "ssh_public_key" {
-  description = "Contenu de votre clé publique SSH (ex: id_rsa.pub)"
+  description = "SSH public key"
   type        = string
 }
 
 variable "n8n_admin_user" {
-  description = "Nom d'utilisateur administrateur pour N8n"
+  description = "Instance suername"
   type        = string
   sensitive   = true
 }
 
 variable "n8n_admin_password" {
-  description = "Mot de passe administrateur pour N8n"
+  description = "Instance password"
   type        = string
   sensitive   = true
 }
