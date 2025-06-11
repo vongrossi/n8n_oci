@@ -1,9 +1,9 @@
-
 provider "oci" {}
 
 data "oci_identity_tenancy" "this" {
   tenancy_id = var.tenancy_ocid
 }
+
 locals {
   compartment_ocid = data.oci_identity_tenancy.this.id
 }
@@ -13,10 +13,10 @@ data "oci_identity_availability_domains" "ads" {
 }
 
 data "oci_core_images" "oracle_linux" {
-  compartment_id = local.compartment_ocid
-  operating_system = "Oracle Linux"
+  compartment_id           = local.compartment_ocid
+  operating_system         = "Oracle Linux"
   operating_system_version = "8"
-  shape = "VM.Standard.A1.Flex"
+  shape                    = "VM.Standard.A1.Flex"
 }
 
 resource "oci_core_virtual_network" "n8n_vcn" {
@@ -44,12 +44,12 @@ resource "oci_core_route_table" "n8n_route_table" {
 }
 
 resource "oci_core_subnet" "n8n_subnet" {
-  cidr_block        = "10.0.1.0/24"
-  compartment_id    = local.compartment_ocid
-  vcn_id            = oci_core_virtual_network.n8n_vcn.id
-  display_name      = "n8n-subnet"
-  route_table_id    = oci_core_route_table.n8n_route_table.id
-  dns_label         = "n8nsubnet"
+  cidr_block                 = "10.0.1.0/24"
+  compartment_id            = local.compartment_ocid
+  vcn_id                    = oci_core_virtual_network.n8n_vcn.id
+  display_name              = "n8n-subnet"
+  route_table_id            = oci_core_route_table.n8n_route_table.id
+  dns_label                 = "n8nsubnet"
   prohibit_public_ip_on_vnic = false
 }
 
@@ -64,10 +64,10 @@ resource "oci_core_instance" "n8n_instance" {
     ocpus         = 1
   }
 
-source_details {
-  source_type = "image"
-  image_id    = "ocid1.image.oc1.eu-paris-1.aaaaaaaaquhxkpqu4bcbvflrcz6wvq6zzxwhayrl7atfns2m6q4frnggcffja"
-}
+  source_details {
+    source_type = "image"
+    image_id    = data.oci_core_images.oracle_linux.images[0].id
+  }
 
   create_vnic_details {
     subnet_id        = oci_core_subnet.n8n_subnet.id
@@ -77,7 +77,7 @@ source_details {
   metadata = {
     ssh_authorized_keys = var.ssh_public_key
     user_data = base64encode(templatefile("${path.module}/../scripts/install_n8n.sh", {
-      n8n_user     = var.n8n_admin_user
+      n8n_user     = var.n8n_admin_user,
       n8n_password = var.n8n_admin_password
     }))
   }
