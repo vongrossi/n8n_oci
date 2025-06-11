@@ -3,16 +3,18 @@ variable "tenancy_ocid" {
   type        = string
 }
 
-variable "vm_admin_user" {
-  description = "Username for the VM SSH login"
-  type        = string
-}
-
-variable "vm_admin_password" {
-  description = "Password for the VM SSH login"
+variable "n8n_admin_user" {
+  description = "Instance admin username"
   type        = string
   sensitive   = true
 }
+
+variable "n8n_admin_password" {
+  description = "Instance admin password"
+  type        = string
+  sensitive   = true
+}
+
 
 variable "ssh_public_key" {
   description = "SSH Public Key"
