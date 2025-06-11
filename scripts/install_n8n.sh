@@ -22,7 +22,7 @@ sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-
 sudo chmod +x /usr/local/bin/docker-compose
 
 # Create Docker Compose file with injected credentials
-cat <<EOF | sudo tee docker-compose.yml > /dev/null
+cat <<'EOF' | sudo tee docker-compose.yml > /dev/null
 services:
   n8n:
     image: n8nio/n8n
@@ -33,8 +33,8 @@ services:
     environment:
       - GENERIC_TIMEZONE=Europe/Madrid
       - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=\$\${ESCAPED_USER}
-      - N8N_BASIC_AUTH_PASSWORD=\$\${ESCAPED_PASSWORD}
+      - N8N_BASIC_AUTH_USER=$${ESCAPED_USER}
+      - N8N_BASIC_AUTH_PASSWORD=$${ESCAPED_PASSWORD}
     volumes:
       - ./n8n_data:/home/node/.n8n
 EOF
