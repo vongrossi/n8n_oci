@@ -91,6 +91,6 @@ MIT
 ---
 
 ## ✅ Final Check
-- Ports 22 and 5678 must be open
+- Ports 22, 80, 443 and 5678 must be open
 - Public IP provided by OCI is sufficient to access the UI
 - Domain + SSL optional but recommended for production

@@ -1,4 +1,4 @@
- variable "tenancy_ocid" {
+variable "tenancy_ocid" {
   description = "OCID of Oracle Cloud Tenancy"
   type        = string
 }

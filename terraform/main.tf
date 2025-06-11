@@ -26,6 +26,51 @@ resource "oci_core_virtual_network" "n8n_vcn" {
   dns_label      = "n8nvcn"
 }
 
+# Security list allowing HTTP/HTTPS and n8n ports
+resource "oci_core_security_list" "n8n_security" {
+  compartment_id = local.compartment_ocid
+  vcn_id         = oci_core_virtual_network.n8n_vcn.id
+  display_name   = "n8n-security"
+
+  egress_security_rules = [
+    {
+      protocol         = "all"
+      destination      = "0.0.0.0/0"
+      destination_type = "CIDR_BLOCK"
+    }
+  ]
+
+  ingress_security_rules = [
+    {
+      protocol    = "6" # TCP
+      source      = "0.0.0.0/0"
+      source_type = "CIDR_BLOCK"
+      tcp_options = {
+        min = 80
+        max = 80
+      }
+    },
+    {
+      protocol    = "6"
+      source      = "0.0.0.0/0"
+      source_type = "CIDR_BLOCK"
+      tcp_options = {
+        min = 443
+        max = 443
+      }
+    },
+    {
+      protocol    = "6"
+      source      = "0.0.0.0/0"
+      source_type = "CIDR_BLOCK"
+      tcp_options = {
+        min = 5678
+        max = 5678
+      }
+    }
+  ]
+}
+
 resource "oci_core_internet_gateway" "n8n_igw" {
   compartment_id = local.compartment_ocid
   display_name   = "n8n-igw"
@@ -45,11 +90,12 @@ resource "oci_core_route_table" "n8n_route_table" {
 
 resource "oci_core_subnet" "n8n_subnet" {
   cidr_block                 = "10.0.1.0/24"
-  compartment_id            = local.compartment_ocid
-  vcn_id                    = oci_core_virtual_network.n8n_vcn.id
-  display_name              = "n8n-subnet"
-  route_table_id            = oci_core_route_table.n8n_route_table.id
-  dns_label                 = "n8nsubnet"
+  compartment_id             = local.compartment_ocid
+  vcn_id                     = oci_core_virtual_network.n8n_vcn.id
+  display_name               = "n8n-subnet"
+  route_table_id             = oci_core_route_table.n8n_route_table.id
+  security_list_ids          = [oci_core_security_list.n8n_security.id]
+  dns_label                  = "n8nsubnet"
   prohibit_public_ip_on_vnic = false
 }
 
