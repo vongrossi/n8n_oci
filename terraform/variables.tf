@@ -9,7 +9,7 @@ variable "ssh_public_key" {
 }
 
 variable "n8n_admin_user" {
-  description = "Instance suername"
+  description = "Instance username"
   type        = string
   sensitive   = true
 }
