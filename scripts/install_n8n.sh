@@ -1,14 +1,15 @@
 #!/bin/bash
 set -euo pipefail
 
-# Credentials for n8n basic auth are supplied by Terraform when rendering this
-# template. They replace the previously hard-coded values.
-N8N_BASIC_AUTH_USER="${n8n_user}"
-N8N_BASIC_AUTH_PASSWORD="${n8n_password}"
+# Credentials injected by Terraform
+N8N_BASIC_AUTH_USER="__N8N_USER__"
+N8N_BASIC_AUTH_PASSWORD="__N8N_PASSWORD__"
 
-# Escape special characters for sed replacement
+# Escape special characters
 ESCAPED_USER=$(printf '%s' "$N8N_BASIC_AUTH_USER" | sed -e 's/[\/&|]/\\&/g')
 ESCAPED_PASSWORD=$(printf '%s' "$N8N_BASIC_AUTH_PASSWORD" | sed -e 's/[\/&|]/\\&/g')
+
+# Install Docker and Docker Compose
 sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release
 curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
 echo \
@@ -17,15 +18,11 @@ echo \
   $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
 sudo apt update && sudo apt install -y docker-ce docker-ce-cli containerd.io
 sudo usermod -aG docker $USER
-newgrp docker
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
-SCRIPT_DIR="$(cd "$(dirname "$0")" &>/dev/null && pwd)"
-cd "$SCRIPT_DIR/.."
 
-# Ensure docker-compose.yml is present. Create it with defaults if missing.
-if [ ! -f docker-compose.yml ]; then
-  cat <<'EOF' | sudo tee docker-compose.yml > /dev/null
+# Create Docker Compose file with injected credentials
+cat <<EOF | sudo tee docker-compose.yml > /dev/null
 services:
   n8n:
     image: n8nio/n8n
@@ -36,14 +33,13 @@ services:
     environment:
       - GENERIC_TIMEZONE=Europe/Madrid
       - N8N_BASIC_AUTH_ACTIVE=true
-      - N8N_BASIC_AUTH_USER=admin
-      - N8N_BASIC_AUTH_PASSWORD=strongpassword
+      - N8N_BASIC_AUTH_USER=${ESCAPED_USER}
+      - N8N_BASIC_AUTH_PASSWORD=${ESCAPED_PASSWORD}
     volumes:
       - ./n8n_data:/home/node/.n8n
 EOF
-fi
-sudo sed -i "s|N8N_BASIC_AUTH_USER=.*|N8N_BASIC_AUTH_USER=$${ESCAPED_USER}|" docker-compose.yml
-sudo sed -i "s|N8N_BASIC_AUTH_PASSWORD=.*|N8N_BASIC_AUTH_PASSWORD=$${ESCAPED_PASSWORD}|" docker-compose.yml
+
+# Prepare volume and start container
 mkdir -p n8n_data
 sudo chown -R 1000:1000 n8n_data
-docker-compose up -d
+sudo docker-compose up -d
