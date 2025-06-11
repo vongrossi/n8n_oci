@@ -1,13 +1,9 @@
 #!/bin/bash
 set -euo pipefail
 
-# Credentials injected by Terraform
-N8N_BASIC_AUTH_USER="__N8N_USER__"
-N8N_BASIC_AUTH_PASSWORD="__N8N_PASSWORD__"
-
-# Escape special characters
-ESCAPED_USER=$(printf '%s' "$N8N_BASIC_AUTH_USER" | sed -e 's/[\/&|]/\\&/g')
-ESCAPED_PASSWORD=$(printf '%s' "$N8N_BASIC_AUTH_PASSWORD" | sed -e 's/[\/&|]/\\&/g')
+# Default n8n credentials
+ESCAPED_USER="admin"
+ESCAPED_PASSWORD="strongpassword"
 
 # Install Docker and Docker Compose
 sudo apt update && sudo apt install -y ca-certificates curl gnupg lsb-release
@@ -21,7 +17,7 @@ sudo usermod -aG docker $USER
 sudo curl -L "https://github.com/docker/compose/releases/latest/download/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
 sudo chmod +x /usr/local/bin/docker-compose
 
-# Create Docker Compose file with injected credentials
+# Create Docker Compose file with default credentials
 cat <<'EOF' | sudo tee docker-compose.yml > /dev/null
 services:
   n8n:
