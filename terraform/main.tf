@@ -26,7 +26,7 @@ resource "oci_core_virtual_network" "n8n_vcn" {
   dns_label      = "n8nvcn"
 }
 
-# Security list allowing HTTP/HTTPS and n8n ports
+# Security list allowing SSH, HTTP/HTTPS and n8n ports
 resource "oci_core_security_list" "n8n_security" {
   compartment_id = local.compartment_ocid
   vcn_id         = oci_core_virtual_network.n8n_vcn.id
@@ -36,6 +36,16 @@ resource "oci_core_security_list" "n8n_security" {
     protocol         = "all"
     destination      = "0.0.0.0/0"
     destination_type = "CIDR_BLOCK"
+  }
+
+  ingress_security_rules {
+    protocol    = "6" # TCP
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+      min = 22
+      max = 22
+    }
   }
 
   ingress_security_rules {
