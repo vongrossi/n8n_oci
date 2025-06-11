@@ -7,6 +7,7 @@
 ## ✨ Features
 - Runs on VM.Standard.A1.Flex (ARM, free tier)
 - Public IP access on port 5678
+- SSH access on port 22
 - Basic auth enabled out of the box
 - Deployable via Oracle Cloud Resource Manager or Terraform CLI
 
