@@ -32,43 +32,41 @@ resource "oci_core_security_list" "n8n_security" {
   vcn_id         = oci_core_virtual_network.n8n_vcn.id
   display_name   = "n8n-security"
 
-  egress_security_rules = [
-    {
-      protocol         = "all"
-      destination      = "0.0.0.0/0"
-      destination_type = "CIDR_BLOCK"
-    }
-  ]
+  egress_security_rules {
+    protocol         = "all"
+    destination      = "0.0.0.0/0"
+    destination_type = "CIDR_BLOCK"
+  }
 
-  ingress_security_rules = [
-    {
-      protocol    = "6" # TCP
-      source      = "0.0.0.0/0"
-      source_type = "CIDR_BLOCK"
-      tcp_options = {
-        min = 80
-        max = 80
-      }
-    },
-    {
-      protocol    = "6"
-      source      = "0.0.0.0/0"
-      source_type = "CIDR_BLOCK"
-      tcp_options = {
-        min = 443
-        max = 443
-      }
-    },
-    {
-      protocol    = "6"
-      source      = "0.0.0.0/0"
-      source_type = "CIDR_BLOCK"
-      tcp_options = {
-        min = 5678
-        max = 5678
-      }
+  ingress_security_rules {
+    protocol    = "6" # TCP
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+      min = 80
+      max = 80
     }
-  ]
+  }
+
+  ingress_security_rules {
+    protocol    = "6"
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+      min = 443
+      max = 443
+    }
+  }
+
+  ingress_security_rules {
+    protocol    = "6"
+    source      = "0.0.0.0/0"
+    source_type = "CIDR_BLOCK"
+    tcp_options {
+      min = 5678
+      max = 5678
+    }
+  }
 }
 
 resource "oci_core_internet_gateway" "n8n_igw" {
