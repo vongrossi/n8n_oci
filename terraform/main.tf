@@ -66,7 +66,7 @@ resource "oci_core_instance" "n8n_instance" {
 
   source_details {
     source_type = "image"
-    image_id    = data.oci_core_images.oracle_linux.images[0].id
+    source_id   = data.oci_core_images.oracle_linux.images[0].id
   }
 
   create_vnic_details {
