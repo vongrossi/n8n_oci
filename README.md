@@ -54,6 +54,9 @@ Oracle Resource Manager sets this variable automatically when deploying via the 
 The stack automatically retrieves the latest **Ubuntu 22.04** image, so no image
 OCID needs to be provided when deploying manually.
 
+The provisioning script removes the default `opc` user if present so that only the
+`ubuntu` account remains for SSH access.
+
 ## 🔐 Default Credentials
 - Username: `admin`
 - Password: `strongpassword`

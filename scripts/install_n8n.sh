@@ -1,6 +1,11 @@
 #!/bin/bash
 set -euo pipefail
 
+# Remove default opc user if present
+if id "opc" &>/dev/null; then
+  sudo userdel -r opc
+fi
+
 # Default n8n credentials
 ESCAPED_USER="admin"
 ESCAPED_PASSWORD="strongpassword"
