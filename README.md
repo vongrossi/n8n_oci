@@ -50,16 +50,9 @@ terraform apply -var "tenancy_ocid=<your-tenancy-ocid>"
 
 Oracle Resource Manager sets this variable automatically when deploying via the console.
 
-### Image OCID
-When running Terraform manually, you must also provide the OCID of an Ubuntu
-image compatible with your region:
-
-```bash
-terraform apply -var "image_ocid=<ocid>"
-```
-
-You can find available Ubuntu image OCIDs in the Oracle Cloud Console under
-"Images" for your chosen region.
+### Image
+The stack automatically retrieves the latest **Ubuntu 22.04** image, so no image
+OCID needs to be provided when deploying manually.
 
 ## 🔐 Default Credentials
 - Username: `admin`
