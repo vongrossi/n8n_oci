@@ -8,10 +8,20 @@ You don’t need a domain name or SSL, but both can be added optionally for prod
 ## 📦 Requirements
 
 - A free Oracle Cloud account → [Sign up](https://www.oracle.com/cloud/free/)
+- A private SSH key to access your VM
 - Use of the **Always Free Tier** (ARM): VM.Standard.A1.Flex with:
   - 1 OCPU
   - 6 GB RAM
   - 50 GB block storage
+
+When creating your Oracle Cloud account, you must provide a valid credit card for identity verification. You won't be charged as long as you stay within the Always Free tier.
+
+This project uses the `VM.Standard.A1.Flex` instance type, which is part of the Always Free tier with the following limits:
+- **4 OCPUs**
+- **24 GB RAM**
+- **2 VMs max per tenancy**
+
+n8n will run comfortably within those limits.
 
 ---
 
