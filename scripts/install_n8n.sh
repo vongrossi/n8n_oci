@@ -4,6 +4,8 @@ set -euo pipefail
 # Credentials injected by Terraform
 N8N_BASIC_AUTH_USER="__N8N_USER__"
 N8N_BASIC_AUTH_PASSWORD="__N8N_PASSWORD__"
+# Ensure all files are created in the user's home directory
+cd "$HOME"
 
 # Escape special characters
 ESCAPED_USER=$(printf '%s' "$N8N_BASIC_AUTH_USER" | sed -e 's/[\/&|]/\\&/g')
@@ -44,4 +46,4 @@ EOF
 # Prepare volume and start container
 mkdir -p n8n_data
 sudo chown -R 1000:1000 n8n_data
-sudo docker-compose up -d
+sudo docker-compose -p n8n up -d

@@ -72,7 +72,7 @@ http://YOUR_PUBLIC_IP:5678
 > You will be prompted for the credentials defined in
 > [`scripts/install_n8n.sh`](scripts/install_n8n.sh) and written to
 > `docker-compose.yml`.
-> **Note:** During automatic deployment the script runs from the root user's home directory, so `docker-compose.yml` and the `n8n_data/` folder will be inside `/root`.
+> **Note:** During automatic deployment the script changes to the root user's home directory, so `docker-compose.yml` and the `n8n_data/` folder will be inside `/root`.
 
 ---
 
