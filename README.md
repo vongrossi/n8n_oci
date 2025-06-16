@@ -36,6 +36,9 @@ Terraform provisions the VM, installs Docker, and launches n8n automatically via
 `N8N_BASIC_AUTH_USER` and `N8N_BASIC_AUTH_PASSWORD` variables used for basic
 authentication. Edit these values in the script before applying the stack if you
 want custom credentials.
+The script also checks whether the `USER` environment variable is set before
+attempting to add the user to the Docker group, preventing failures in
+non-interactive shells.
 
 ## 🔌 Ports Opened by Terraform
 
