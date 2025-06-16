@@ -134,8 +134,4 @@ If you prefer to access n8n securely via `https://yourdomain.com`, you may:
 
 See [`docs/nginx-ssl.md`](docs/nginx-ssl.md) for help with domain, NGINX setup, and HTTPS.
 
----
 
-## 🙏 Acknowledgements
-
-Based on the excellent guide by [@that-one-tom](https://github.com/that-one-tom/n8n-on-oracle-vm).
