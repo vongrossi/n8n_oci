@@ -29,7 +29,7 @@ n8n will run comfortably within those limits.
 
 You can use the button below to provision the instance and network infrastructure:
 
-[![Deploy to Oracle Cloud](https://github.com/clementalo9/n8n_oci/blob/main/img/Deploy%20to%20Oracle%20Cloud.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
+[![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/raw/main/images/Deploy2OCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
 
 ---
 
