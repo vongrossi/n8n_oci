@@ -1,93 +1,129 @@
-# n8n on Oracle Cloud (Always Free)
+# 🚀 Deploy n8n for Free on Oracle Cloud (Always Free Tier)
 
-> One-click deployment of n8n on Oracle Cloud Free Tier.
-
-[![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/blob/main/images/Deploy2OCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
-
-## ✨ Features
-- Runs on VM.Standard.A1.Flex (ARM, free tier)
-- Public IP access on port 5678
-- SSH access on port 22
-- Basic auth enabled out of the box
-- Deployable via Oracle Cloud Resource Manager or Terraform CLI
-
-## 📝 Prerequisites
-You must first create a free Oracle Cloud account here:
-👉 https://www.oracle.com/cloud/free/
-
-Oracle requires a valid credit card for identity verification, but as long as you stay in the Always Free tier, you will not be charged.
-
-This project uses the `VM.Standard.A1.Flex` instance type, which is included in the Always Free tier with the following limits:
-- **4 OCPUs**
-- **24 GB RAM**
-- **2 VMs max per tenancy**
-
-n8n will run comfortably within those limits.
-
-## 🚀 Quick Deploy (recommended)
-Click the button above to deploy automatically in your Oracle tenancy.
-
-1. Log into your Oracle Cloud account
-2. Select your compartment
-3. Launch the stack and follow the prompts
-   (Resource Manager will ask for `vm_admin_user`, `vm_admin_password`,
-   and `ssh_public_key`)
-
-## 🔧 Manual Deployment
-```bash
-git clone https://github.com/clementalo9/n8n_oci.git
-cd n8n_oci/terraform
-terraform init
-terraform apply
-```
-
-### Tenancy OCID
-When running `terraform apply` manually, pass your tenancy OCID:
-
-```bash
-terraform apply -var "tenancy_ocid=<your-tenancy-ocid>"
-```
-
-Oracle Resource Manager sets this variable automatically when deploying via the console.
-
-### Image
-The stack automatically retrieves the latest **Ubuntu 22.04** image, so no image
-OCID needs to be provided when deploying manually.
-
-The provisioning script removes the default `opc` user if present so that only the
-`ubuntu` account remains for SSH access.
-
-## 🔐 Default Credentials
-- Username: `admin`
-- Password: `strongpassword`
-
-> Change them in `docker-compose.yml` after first deployment.
-
-### VM Credentials
-The Terraform variables `vm_admin_user`, `vm_admin_password`, and `ssh_public_key`
-configure the SSH login for the created virtual machine. OCI Resource Manager
-will prompt for these values when launching the stack.
-
-## 🌐 Accessing n8n
-Go to `http://<your-instance-public-ip>:5678`
-
-✅ Optional: You may configure a custom domain and SSL certificate with Certbot. While not required, it is strongly recommended for production.
-
-## 📂 Structure
- - `terraform/`: OCI resources (VCN, subnet, instance)
- - `scripts/`: Cloud-init script with Docker + n8n setup
- - `backend/`: Express server for sending email and SMS notifications
- - `frontend/`: Example page using notifications.js to call the backend
-
-## 🛡️ SSL/TLS (optional)
-You need a domain name to use Let's Encrypt. We recommend [DuckDNS](https://www.duckdns.org) for a free domain name and simple DNS.
-
-## 📜 License
-MIT
+This guide explains how to deploy [n8n](https://n8n.io/) on Oracle Cloud using a free VM and set it up with Docker and Nginx.
 
 ---
 
-## ✅ Final Check
-- Ports 22, 80, 443 and 5678 must be open
-- Public IP provided by OCI is sufficient to access the UI
-- Domain + SSL optional but recommended for production
+## 🔘 One-Click Deploy
+
+You can deploy your n8n instance with a single click using the Oracle Cloud Resource Manager:
+
+[![Deploy to Oracle Cloud](https://cloudmarketplace.oracle.com/marketplace/content?contentId=cloud-button)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/your-repo/n8n_oci/archive/refs/heads/main.zip)
+
+---
+
+## 🧾 Requirements
+
+- Oracle Cloud Free Tier account
+- SSH client (e.g., PuTTY or Bitvise)
+- SSH key pair (the public key is automatically injected via `authorized_keys`)
+
+---
+
+## 🧩 After Deployment – Setup Steps
+
+Once your instance is created, follow these steps:
+
+### 1. Connect to your Instance
+
+From Oracle Cloud Shell:
+
+```bash
+ssh -i ~/.ssh/id_rsa opc@<your-public-ip>
+```
+
+Replace `<your-public-ip>` with the one shown in the Resource Manager outputs.
+
+> 💡 If using a private key from Windows, connect with Bitvise or PuTTY using the `.ppk` key format.
+
+---
+
+### 2. Update and Install Dependencies
+
+```bash
+sudo apt update && sudo apt upgrade -y
+sudo apt install docker.io docker-compose nginx ufw -y
+sudo systemctl enable docker && sudo systemctl start docker
+```
+
+---
+
+### 3. Clone the Configuration
+
+```bash
+git clone https://github.com/that-one-tom/n8n-on-oracle-vm.git
+cd n8n-on-oracle-vm
+```
+
+---
+
+### 4. Run n8n with Docker
+
+```bash
+docker compose up -d
+```
+
+Check logs:
+
+```bash
+docker logs n8n
+```
+
+---
+
+### 5. Setup Nginx Reverse Proxy
+
+Nginx is preconfigured in the project:
+
+```bash
+sudo cp n8n.conf /etc/nginx/sites-available/default
+sudo nginx -t && sudo systemctl restart nginx
+```
+
+> This configuration redirects HTTP requests to `localhost:5678`.
+
+---
+
+### 6. Open n8n in Your Browser
+
+Visit:
+
+```
+http://<your-public-ip>/setup
+```
+
+You should reach the n8n setup page.
+
+---
+
+## 🧱 Optional – Use a Domain Name
+
+If you have a domain name, point an A record to your instance's public IP and update your Nginx config accordingly.
+
+---
+
+## 🛑 To Stop or Restart
+
+From the `n8n-on-oracle-vm` directory:
+
+```bash
+docker compose down       # stop
+docker compose up -d      # restart
+```
+
+---
+
+## 📏 Oracle Cloud Free Tier Limits Reminder
+
+- 1 VM instance: `VM.Standard.A1.Flex`
+- Up to 4 OCPUs and 24 GB RAM total
+- Always Free Public IP available
+- Storage: 200 GB block volume free
+- 10 TB/month outbound data transfer
+
+---
+
+## 🤝 Credits
+
+Thanks to [that-one-tom](https://github.com/that-one-tom) for the original tutorial and scripts.
+
