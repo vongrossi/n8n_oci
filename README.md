@@ -1,129 +1,135 @@
-# 🚀 Deploy n8n for Free on Oracle Cloud (Always Free Tier)
+# n8n on Oracle Cloud (Always Free)
 
-This guide explains how to deploy [n8n](https://n8n.io/) on Oracle Cloud using a free VM and set it up with Docker and Nginx.
+> One-click deployment of n8n on Oracle Cloud Free Tier.
 
----
+[![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/blob/main/images/Deploy2OCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
 
-## 🔘 One-Click Deploy
+## ✨ Features
+- Runs on VM.Standard.A1.Flex (ARM, free tier)
+- Public IP access on port 5678
+- SSH access on port 22
+- Basic auth enabled out of the box
+- Deployable via Oracle Cloud Resource Manager or Terraform CLI
 
-You can deploy your n8n instance with a single click using the Oracle Cloud Resource Manager:
+## 📝 Prerequisites
+You must first create a free Oracle Cloud account here:  
+👉 https://www.oracle.com/cloud/free/
 
-[![Deploy to Oracle Cloud](https://cloudmarketplace.oracle.com/marketplace/content?contentId=cloud-button)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/your-repo/n8n_oci/archive/refs/heads/main.zip)
+Oracle requires a valid credit card for identity verification, but as long as you stay in the Always Free tier, you will not be charged.
 
----
+This project uses the `VM.Standard.A1.Flex` instance type, which is included in the Always Free tier with the following limits:
+- **4 OCPUs**
+- **24 GB RAM**
+- **2 VMs max per tenancy**
 
-## 🧾 Requirements
+n8n will run comfortably within those limits.
 
-- Oracle Cloud Free Tier account
-- SSH client (e.g., PuTTY or Bitvise)
-- SSH key pair (the public key is automatically injected via `authorized_keys`)
+## 🚀 Deployment Steps
 
----
+1. Click the **Deploy to Oracle Cloud** button above.
+2. Upload your **SSH Public Key** when prompted.
+3. Wait for the stack to finish provisioning (about 2–4 minutes).
 
-## 🧩 After Deployment – Setup Steps
+## 🔐 Connect to your Instance
 
-Once your instance is created, follow these steps:
-
-### 1. Connect to your Instance
-
-From Oracle Cloud Shell:
+From the **Oracle Cloud Shell**:
 
 ```bash
-ssh -i ~/.ssh/id_rsa opc@<your-public-ip>
+ssh -i ~/.ssh/YOUR_PRIVATE_KEY opc@<PUBLIC_IP>
 ```
 
-Replace `<your-public-ip>` with the one shown in the Resource Manager outputs.
+Replace `<PUBLIC_IP>` with the IP address shown at the end of deployment. If you're using **Windows**, connect using **PuTTY** or **Bitvise SSH Client** with your private key.
 
-> 💡 If using a private key from Windows, connect with Bitvise or PuTTY using the `.ppk` key format.
+## 🧰 Install Docker & n8n
 
----
-
-### 2. Update and Install Dependencies
+Once connected to your VM:
 
 ```bash
 sudo apt update && sudo apt upgrade -y
-sudo apt install docker.io docker-compose nginx ufw -y
-sudo systemctl enable docker && sudo systemctl start docker
+sudo apt install -y docker.io docker-compose nginx
+sudo usermod -aG docker $USER
 ```
 
----
+Log out and log in again (or run `newgrp docker`) to apply Docker permissions.
 
-### 3. Clone the Configuration
+Create the `docker-compose.yml` file:
 
 ```bash
-git clone https://github.com/that-one-tom/n8n-on-oracle-vm.git
-cd n8n-on-oracle-vm
+mkdir ~/n8n && cd ~/n8n
+nano docker-compose.yml
 ```
 
----
+Paste the following:
 
-### 4. Run n8n with Docker
+```yaml
+version: "3"
+
+services:
+  n8n:
+    image: n8nio/n8n
+    restart: always
+    ports:
+      - "5678:5678"
+    environment:
+      - N8N_BASIC_AUTH_ACTIVE=true
+      - N8N_BASIC_AUTH_USER=admin
+      - N8N_BASIC_AUTH_PASSWORD=adminpassword
+      - N8N_HOST=your_public_ip
+      - N8N_PORT=5678
+    volumes:
+      - ~/.n8n:/home/node/.n8n
+```
+
+Start n8n:
 
 ```bash
 docker compose up -d
 ```
 
-Check logs:
+## 🌐 Configure NGINX (Optional, for Port 80)
 
 ```bash
-docker logs n8n
+sudo nano /etc/nginx/sites-available/n8n
 ```
 
----
+Paste:
 
-### 5. Setup Nginx Reverse Proxy
+```nginx
+server {
+    listen 80;
+    server_name _;
 
-Nginx is preconfigured in the project:
+    location / {
+        proxy_pass http://localhost:5678/;
+        proxy_set_header Host $host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+    }
+}
+```
+
+Then enable:
 
 ```bash
-sudo cp n8n.conf /etc/nginx/sites-available/default
+sudo ln -s /etc/nginx/sites-available/n8n /etc/nginx/sites-enabled/
 sudo nginx -t && sudo systemctl restart nginx
 ```
 
-> This configuration redirects HTTP requests to `localhost:5678`.
-
----
-
-### 6. Open n8n in Your Browser
-
-Visit:
-
+Now you can access n8n at:
 ```
-http://<your-public-ip>/setup
+http://<PUBLIC_IP> or http://<PUBLIC_IP>:5678
 ```
 
-You should reach the n8n setup page.
-
----
-
-## 🧱 Optional – Use a Domain Name
-
-If you have a domain name, point an A record to your instance's public IP and update your Nginx config accordingly.
-
----
-
-## 🛑 To Stop or Restart
-
-From the `n8n-on-oracle-vm` directory:
+## 🛑 Stopping n8n
 
 ```bash
-docker compose down       # stop
-docker compose up -d      # restart
+cd ~/n8n
+docker compose down
 ```
 
 ---
 
-## 📏 Oracle Cloud Free Tier Limits Reminder
+## 📦 Credits
 
-- 1 VM instance: `VM.Standard.A1.Flex`
-- Up to 4 OCPUs and 24 GB RAM total
-- Always Free Public IP available
-- Storage: 200 GB block volume free
-- 10 TB/month outbound data transfer
-
----
-
-## 🤝 Credits
-
-Thanks to [that-one-tom](https://github.com/that-one-tom) for the original tutorial and scripts.
-
+Based on the [tutorial](https://github.com/that-one-tom/n8n-on-oracle-vm) by @that-one-tom.
