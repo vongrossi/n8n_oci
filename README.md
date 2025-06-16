@@ -37,6 +37,17 @@ Terraform provisions the VM, installs Docker, and launches n8n automatically via
 authentication. Edit these values in the script before applying the stack if you
 want custom credentials.
 
+## 🔌 Ports Opened by Terraform
+
+The Terraform stack creates a security list that allows inbound traffic on the following ports:
+
+- **22** – SSH access to administer the VM.
+- **80** – HTTP traffic, required if you plan to run a reverse proxy or obtain certificates with Certbot.
+- **443** – HTTPS traffic once you configure SSL for n8n.
+- **5678** – The n8n editor listens on this port.
+
+You can review these rules in [`terraform/main.tf`](terraform/main.tf) inside the `oci_core_security_list` resource.
+
 Once deployment completes, continue below to access your n8n editor.
 
 ---
