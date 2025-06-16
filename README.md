@@ -50,6 +50,12 @@ You can review these rules in [`terraform/main.tf`](terraform/main.tf) inside th
 
 Once deployment completes, continue below to access your n8n editor.
 
+To connect via SSH, use the default **ubuntu** user with the same key you provided during stack creation:
+
+```bash
+ssh ubuntu@YOUR_PUBLIC_IP
+```
+
 ---
 
 ## 🌐 Access Your n8n Editor
