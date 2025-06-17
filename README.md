@@ -1,7 +1,10 @@
 # 🚀 Deploy n8n on Oracle Cloud Free Tier
 
-This guide helps you deploy [n8n](https://n8n.io) for free on Oracle Cloud using the Always Free Tier with an ARM-based VM.  
+This guide helps you deploy [n8n](https://n8n.io) for free on Oracle Cloud using the Always Free Tier with an ARM-based VM.
 You don’t need a domain name or SSL, but both can be added optionally for production use.
+
+> **Production note**
+> For a secure setup, it is highly recommended to run n8n behind an NGINX reverse proxy with HTTPS enabled. This protects the login cookie and other traffic. See [docs/nginx-ssl.md](docs/nginx-ssl.md) for instructions.
 
 ---
 
