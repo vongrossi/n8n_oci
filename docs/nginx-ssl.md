@@ -97,6 +97,10 @@ If you previously enabled Basic Auth in your `docker-compose.yml`,
 remove the `N8N_BASIC_AUTH_*` lines so that n8n can manage
 authentication via its own login page.
 
+If you also set `N8N_SECURE_COOKIE=false` to allow logins over plain HTTP,
+remove that line after obtaining the certificate so that cookies are marked
+secure.
+
 Recreate the container after editing:
 
 ```bash
