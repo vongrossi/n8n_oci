@@ -93,10 +93,15 @@ to the `n8n` service in your `docker-compose.yml`:
       - WEBHOOK_URL=https://n8n.example.com/
 ```
 
+If you previously enabled Basic Auth in your `docker-compose.yml`,
+remove the `N8N_BASIC_AUTH_*` lines so that n8n can manage
+authentication via its own login page.
+
 Recreate the container after editing:
 
 ```bash
 docker compose up -d
 ```
 
-Your instance is now secured with HTTPS via NGINX.
+Your instance is now secured with HTTPS via NGINX and uses
+n8n's built-in login.
