@@ -36,14 +36,13 @@ Create `/etc/nginx/sites-available/n8n` with the following content
 
 ```nginx
 server {
-    listen 80;
-    server_name n8n.example.com;
-
+    listen 80 default_server;
+    listen [::]:80 default_server;
+    root /var/www/html;
+    index index.html index.htm index.nginx-debian.html;
+    server_name _;
     location / {
-        proxy_pass http://localhost:5678;
-        proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        try_files $uri $uri/ =404;
     }
 }
 ```
