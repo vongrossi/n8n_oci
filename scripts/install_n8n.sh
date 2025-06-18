@@ -39,6 +39,7 @@ services:
       - N8N_BASIC_AUTH_ACTIVE=true
       - N8N_BASIC_AUTH_USER=$ESCAPED_USER
       - N8N_BASIC_AUTH_PASSWORD=$ESCAPED_PASSWORD
+      - N8N_SECURE_COOKIE=false
     volumes:
       - ./n8n_data:/home/node/.n8n
 EOF
