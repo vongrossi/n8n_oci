@@ -69,12 +69,11 @@ ssh -i /path/to/private/key ubuntu@YOUR_PUBLIC_IP
 - Go to your browser and open:
 
 ```
-http://YOUR_PUBLIC_IP:5678
+ http://YOUR_PUBLIC_IP:5678
 ```
 
-> You will be prompted for the credentials defined in
-> [`scripts/install_n8n.sh`](scripts/install_n8n.sh) and written to
-> `docker-compose.yml`.
+> On first run, n8n redirects to
+> `http://YOUR_PUBLIC_IP:5678/setup` where you can create your own credentials.
 > **Note:** During automatic deployment the script changes to the root user's home directory, so `docker-compose.yml` and the `n8n_data/` folder will be inside `/root`.
 
 ---
