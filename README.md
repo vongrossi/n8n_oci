@@ -34,14 +34,8 @@ You can use the button below to provision the instance and network infrastructur
 
 [![Deploy to Oracle Cloud](https://github.com/clementalo9/oke_A1/raw/main/images/Deploy2OCI.svg)](https://cloud.oracle.com/resourcemanager/stacks/create?zipUrl=https://github.com/clementalo9/n8n_oci/archive/refs/heads/main.zip)
 
-Terraform provisions the VM, installs Docker, and launches n8n automatically via
-[`scripts/install_n8n.sh`](scripts/install_n8n.sh). The script defines the
-`N8N_BASIC_AUTH_USER` and `N8N_BASIC_AUTH_PASSWORD` variables used for basic
-authentication. Edit these values in the script before applying the stack if you
-want custom credentials.
-The script also checks whether the `USER` environment variable is set before
-attempting to add the user to the Docker group, preventing failures in
-non-interactive shells.
+Terraform provisions the VM, installs Docker, and install n8n automatically via
+[`scripts/install_n8n.sh`](scripts/install_n8n.sh). 
 
 ## 🔌 Ports Opened by Terraform
 
@@ -56,7 +50,7 @@ You can review these rules in [`terraform/main.tf`](terraform/main.tf) inside th
 
 Once deployment completes, continue below to access your n8n editor.
 
-To connect via SSH, use the default **ubuntu** user and provide the private key you used during stack creation:
+If you want to connect via SSH to you VM, use the default **ubuntu** user and provide the private key you used during stack creation:
 
 ```bash
 ssh -i /path/to/private/key ubuntu@YOUR_PUBLIC_IP
@@ -69,11 +63,10 @@ ssh -i /path/to/private/key ubuntu@YOUR_PUBLIC_IP
 - Go to your browser and open:
 
 ```
- http://YOUR_PUBLIC_IP:5678
+ http://YOUR_PUBLIC_IP:5678/setup
 ```
 
-> On first run, n8n redirects to
-> `http://YOUR_PUBLIC_IP:5678/setup` where you can create your own credentials.
+> On first run, connecting to `http://YOUR_PUBLIC_IP:5678/setup` allows you to create your own credentials.
 > **Note:** During automatic deployment the script changes to the root user's home directory, so `docker-compose.yml` and the `n8n_data/` folder will be inside `/root`.
 
 ---
@@ -86,21 +79,7 @@ By default, n8n is accessible via:
 http://YOUR_PUBLIC_IP:5678
 ```
 
-This is sufficient for most use cases, and does **not** require a domain name or reverse proxy.
-
-### ✅ Do you want to use a custom domain and HTTPS?
-
-If you prefer to access n8n securely via `https://yourdomain.com`, you may:
-
-1. **Point your domain name** to your instance’s public IP (set A record).
-2. **Install and configure NGINX** as a reverse proxy.
-3. **Use Certbot** to generate a free SSL certificate.
-
-> ⚠️ This part is optional. You can skip it if you don’t plan to use HTTPS or a custom domain.
-
----
-
-## 📚 Advanced Configuration
+This is sufficient to work with n8n which does **not** require a domain name or reverse proxy. But for security reason, I strongly recommand the use of HTTPS (domain name required) and NGINX
 
 See [`docs/nginx-ssl.md`](docs/nginx-ssl.md) for help with domain, NGINX setup, and HTTPS.
 
