@@ -102,5 +102,5 @@ Recreate the container after editing:
 docker compose up -d
 ```
 
-Your instance is now secured with HTTPS via NGINX and uses
-n8n's built-in login.
+Your instance is now secured with HTTPS via NGINX. You can now connect to `https://n8n.example.com`.
+
