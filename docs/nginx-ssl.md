@@ -76,8 +76,6 @@ You can test renewal with:
 sudo certbot renew --dry-run
 ```
 
-Once complete, visit `https://n8n.example.com` and log in with the
-credentials defined in your `docker-compose.yml`.
 
 ---
 
