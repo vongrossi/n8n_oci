@@ -8,3 +8,10 @@ variable "ssh_public_key" {
   type        = string
 }
 
+variable "ad_index" {
+  description = "index of AD: 0 = AD-1, 1 = AD-2, 2 = AD-3"
+  type        = number
+  default     = 0
+}
+
+
